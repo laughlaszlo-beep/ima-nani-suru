@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>いま なにする？</title>
-  
   <style>
     * {
       box-sizing: border-box;
@@ -27,48 +26,66 @@
       width: 100vw;
       height: 100vh;
       background: linear-gradient(135deg, #fef3c7, #dbeafe, #ede9fe);
-      padding: clamp(28px, 5vw, 56px);
+      padding: clamp(28px, 5vw, 64px);
       text-align: center;
-      display: grid;
-      grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
-      gap: clamp(44px, 7vw, 88px);
-      align-items: center;
-    }
-
-    .time {
-      font-family: "Segoe UI", sans-serif;
-      font-size: clamp(80px, 11vw, 150px);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.03em;
-      font-variant-numeric: tabular-nums;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.02em;
-      color: #2563eb;
-      margin-bottom: 14px;
-    }
-
-    .date {
-      font-size: clamp(15px, 1.5vw, 20px);
-      color: #64748b;
-      font-weight: 700;
-      margin-bottom: 0;
-    }
-
-    .side-panel {
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      min-height: 100%;
-      padding-inline: clamp(32px, 5vw, 72px);
+      align-items: center;
+      gap: clamp(22px, 4vw, 40px);
     }
 
     .main-panel {
-      width: 100%;
+      width: min(100%, 1080px);
       min-width: 0;
+    }
+
+    .top-labels {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: clamp(18px, 3vw, 28px);
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(16px, 2vw, 24px);
+      color: #334155;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(255,255,255,0.55);
+      backdrop-filter: blur(14px);
+      border-radius: 999px;
+      padding: 12px 22px;
+      letter-spacing: 0.01em;
+      box-shadow: 0 10px 24px rgba(148, 163, 184, 0.18);
+    }
+
+    .clothing-label {
+      color: #ffffff;
+      background: linear-gradient(180deg, #60a5fa, #2563eb);
+      border-color: rgba(255,255,255,0.45);
+      font-weight: 900;
+    }
+
+    .weather-label {
+      color: #ffffff;
+      background: linear-gradient(180deg, #f59e0b, #ea580c);
+      border-color: rgba(255,255,255,0.45);
+      font-weight: 900;
+    }
+
+    .weather-label.is-clear {
+      background: rgba(255,255,255,0.82);
+      color: #64748b;
+    }
+
+    .weather-label.is-error {
+      background: #94a3b8;
+      color: #ffffff;
     }
 
     .task-card {
@@ -76,36 +93,66 @@
       min-width: 0;
       background: linear-gradient(135deg, #60a5fa, #818cf8);
       color: white;
-      border-radius: clamp(30px, 4vw, 46px);
-      padding: clamp(34px, 5vw, 58px) clamp(28px, 4vw, 48px) clamp(30px, 4vw, 46px);
+      border-radius: clamp(34px, 5vw, 58px);
+      padding: clamp(46px, 7vw, 88px) clamp(32px, 6vw, 72px) clamp(42px, 6vw, 76px);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 16px 36px rgba(79, 70, 229, 0.18);
+      transition: transform 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease;
     }
 
-    .label {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(14px, 1.5vw, 18px);
-      color: #eff6ff;
-      background: rgba(255,255,255,0.18);
-      border-radius: 999px;
-      padding: 7px 13px;
-      margin-bottom: 20px;
-      letter-spacing: 0.01em;
+    .task-card.attention {
+      animation: attentionPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes attentionPulse {
+      0% {
+        transform: scale(1);
+        filter: brightness(1);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.25),
+          0 16px 36px rgba(79, 70, 229, 0.18);
+      }
+
+      20% {
+        transform: scale(1.018);
+        filter: brightness(1.08);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.35),
+          0 0 0 12px rgba(96,165,250,0.14),
+          0 0 0 26px rgba(129,140,248,0.08),
+          0 28px 56px rgba(79, 70, 229, 0.32);
+      }
+
+      45% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+
+      65% {
+        transform: scale(1.012);
+        filter: brightness(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+        filter: brightness(1);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.25),
+          0 16px 36px rgba(79, 70, 229, 0.18);
+      }
     }
 
     .task-icon {
-      font-size: clamp(58px, 8vw, 96px);
+      font-size: clamp(86px, 13vw, 156px);
       line-height: 1;
       margin-bottom: 14px;
     }
 
     .task-main {
-      font-size: clamp(42px, 5.8vw, 82px);
+      font-size: clamp(58px, 10vw, 132px);
       font-weight: 900;
       line-height: 1.08;
       letter-spacing: 0.01em;
-      margin-bottom: 16px;
+      margin-bottom: clamp(22px, 4vw, 40px);
       white-space: nowrap;
       text-align: center;
       max-width: 100%;
@@ -114,16 +161,21 @@
 
     .task-note {
       color: #eff6ff;
-      font-size: clamp(18px, 2vw, 24px);
+      font-size: clamp(22px, 3vw, 36px);
       line-height: 1.7;
       margin: 0 auto;
-      max-width: 560px;
+      max-width: 880px;
+    }
+
+    .task-progress {
+      width: 100%;
+      margin-top: clamp(28px, 5vw, 48px);
     }
 
     .progress-wrap {
       width: 100%;
       min-width: 0;
-      margin-top: 20px;
+      margin-top: 0;
     }
 
     .progress-bar {
@@ -145,38 +197,92 @@
     }
 
     .progress-label {
-      font-size: clamp(12px, 1.4vw, 16px);
+      font-size: clamp(14px, 1.8vw, 22px);
       font-weight: 700;
-      color: #64748b;
-      margin-top: 10px;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.28em;
+      color: rgba(255,255,255,0.9);
+      margin-top: 12px;
       margin-bottom: 0;
     }
 
-    .next-card {
-      width: 100%;
-      max-width: 100%;
-      margin-top: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border-radius: 999px;
-      background: #f1f5f9;
-      color: #64748b;
-      font-size: clamp(13px, 1.4vw, 16px);
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .progress-number {
+      font-size: 1.7em;
+      font-weight: 900;
+      line-height: 1;
     }
 
-    .footer {
-      grid-column: 1 / -1;
-      margin-top: 0;
-      color: #94a3b8;
-      font-size: 11px;
-      line-height: 1.7;
+    .next-card {
+      width: min(100%, 1080px);
+      max-width: 100%;
+      margin-top: 18px;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: center;
+      gap: 26px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: visible;
+    }
+
+    .next-task-item {
+      position: relative;
+      flex: 1 1 280px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 44px 14px 26px;
+      clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 50%, calc(100% - 28px) 100%, 0 100%, 18px 50%);
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: clamp(15px, 1.8vw, 22px);
+      font-weight: 700;
+      line-height: 1.35;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: ellipsis;
+      box-shadow: 0 8px 20px rgba(148, 163, 184, 0.12);
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    
+
+    .next-task-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .next-task-item:first-child {
+      background: linear-gradient(180deg, #ffffff, #eef2ff);
+      border: 2px solid rgba(96, 165, 250, 0.24);
+    }
+
+    .next-task-item:nth-child(2) {
+      opacity: 0.88;
+    }
+
+    .next-task-item:nth-child(3) {
+      opacity: 0.72;
+    }
+
+    .next-task-item::before {
+      content: "";
+      position: absolute;
+      left: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #fef3c7, #dbeafe, #ede9fe);
+      border-radius: 999px;
+    }
+
+    .next-task-item:first-child::before {
+      display: none;
     }
 
     @media (max-width: 760px) {
@@ -189,77 +295,91 @@
         min-height: 100vh;
         height: auto;
         padding: 22px;
-        display: block;
+        gap: 18px;
       }
 
-      .side-panel {
-        min-height: auto;
-        margin-bottom: 22px;
-        padding-inline: 0;
-      }
-
-      .time {
-        font-size: clamp(44px, 13vw, 82px);
-        margin-bottom: 10px;
-      }
-
-      .date {
-        font-size: 14px;
-        margin-bottom: 0;
+      .main-panel {
+        width: 100%;
       }
 
       .task-card {
         border-radius: 28px;
-        padding: 28px 20px 24px;
+        padding: 36px 20px 32px;
       }
 
       .task-icon {
-        font-size: clamp(46px, 12vw, 74px);
+        font-size: clamp(64px, 18vw, 96px);
       }
 
       .task-main {
-        font-size: clamp(28px, 7.5vw, 46px);
+        font-size: clamp(42px, 12vw, 72px);
       }
 
       .task-note {
-        font-size: 16px;
+        font-size: clamp(18px, 5vw, 24px);
       }
+
+      .next-card {
+        gap: 12px;
+      }
+
+      .next-task-item {
+        flex-basis: 100%;
+      }
+
+      
     }
   </style>
 </head>
 <body>
   <main class="app">
-    <section class="side-panel">
-      <div class="time" id="clock"></div>
-      <div class="date" id="todayDate"></div>
-    </section>
-
     <section class="main-panel">
-      <section class="task-card">
-      <div class="label">いま すること</div>
-      <div class="task-icon" id="taskIcon"></div>
-      <div class="task-main" id="taskMain"></div>
-      <p class="task-note" id="taskNote"></p>
-    </section>
-
-    <div class="progress-wrap">
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
+      <div class="top-labels">
+        <div class="label" id="todayDate"></div>
+        <div class="label clothing-label" id="clothingLabel">ふくそう かくにん中</div>
+        <div class="label weather-label" id="weatherLabel">てんき かくにん中</div>
       </div>
-      <div class="progress-label" id="progressLabel"></div>
-    </div>
 
-    <div class="next-card" id="nextTask"></div>
+      <section class="task-card">
+        <div class="task-icon" id="taskIcon"></div>
+        <div class="task-main" id="taskMain"></div>
+        <p class="task-note" id="taskNote"></p>
+
+        <div class="task-progress">
+          <div class="progress-wrap">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-label" id="progressLabel"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="next-card" id="nextTask"></div>
     </section>
   </main>
 
   <script>
-    const DAY_END_MINUTES = 24 * 60;
+    const WEATHER_CONFIG = {
+      latitude: 38.2682,
+      longitude: 140.8694,
+      outingStartHour: 8,
+      outingEndHour: 16,
+      probabilityThreshold: 40,
+      rainThreshold: 0
+    };
 
     const TASKS = [
       {
         start: "00:00",
-        end: "07:00",
+        end: "06:00",
+        icon: "🌈",
+        main: "じゆうじかん",
+        note: "じぶんで すごしかたを きめよう。"
+      },
+      {
+        start: "06:00",
+        end: "07:20",
         icon: "🌈",
         main: "じゆうじかん",
         note: "じぶんで すごしかたを きめよう。"
@@ -269,26 +389,33 @@
         end: "07:20",
         icon: "👕",
         main: "おきがえ",
-        note: "はてな つける → かみのけセット"
+        note: "はてなセット ＋ かみのけセット"
       },
       {
         start: "07:20",
-        end: "07:45",
+        end: "07:40",
         icon: "🍚",
         main: "あさごはん",
-        note: "あさごはん を たべよう。"
+        note: "一日のげんきをチャージ"
+      },
+      {
+        start: "07:40",
+        end: "07:45",
+        icon: "💧",
+        main: "かお を あらおう",
+        note: "ひやけどめクリームもわすれずに"
       },
       {
         start: "07:45",
         end: "07:50",
-        icon: "🫧",
-        main: "かお を あらおう",
-        note: "すいとう と ランチセット を もとう。"
+        icon: "🎒",
+        main: "すいとう＋ランチセット を もとう。",
+        note: "わすれものがないかチェック"
       },
       {
         start: "07:50",
         end: "08:00",
-        icon: "🎒",
+        icon: "🚶",
         main: "しゅっぱつ",
         note: "きをつけて いってらっしゃい。"
       },
@@ -367,9 +494,9 @@
       return TASKS.find(task => now >= timeToMinutes(task.start) && now < timeToMinutes(task.end)) || TASKS[TASKS.length - 1];
     }
 
-    function getNextTask(date) {
+    function getUpcomingTasks(date, count = 3) {
       const now = getMinutesNow(date);
-      return TASKS.find(task => now < timeToMinutes(task.start)) || null;
+      return TASKS.filter(task => now < timeToMinutes(task.start)).slice(0, count);
     }
 
     function getTaskProgress(date, task) {
@@ -403,15 +530,47 @@
       }).format(date);
     }
 
-    function formatClock(date) {
-      const hour = String(date.getHours()).padStart(2, "0");
-      const minute = String(date.getMinutes()).padStart(2, "0");
+    function getClothingAdvice(maxTemp) {
+      if (maxTemp >= 20) return "はんそで";
+      if (maxTemp >= 15) return "ながそで";
+      return "ながそで ＋ うわぎ";
+    }
 
-      return `
-        <span>${hour}</span>
-        <span style="position:relative; top:-0.06em; font-size:0.82em;">:</span>
-        <span>${minute}</span>
-      `;
+    function getUmbrellaAdvice(hourlyTimes, hourlyRain, hourlyProbability) {
+      const hasRain = hourlyTimes.some((time, index) => {
+        const hour = new Date(time).getHours();
+        const rain = Number(hourlyRain?.[index] || 0);
+        const probability = Number(hourlyProbability?.[index] || 0);
+
+        return hour >= WEATHER_CONFIG.outingStartHour &&
+          hour <= WEATHER_CONFIG.outingEndHour &&
+          (rain > WEATHER_CONFIG.rainThreshold || probability >= WEATHER_CONFIG.probabilityThreshold);
+      });
+
+      return hasRain ? "☔ かさ いる" : "☀️ かさ いらない";
+    }
+
+    async function fetchWeatherData() {
+      const params = new URLSearchParams({
+        latitude: WEATHER_CONFIG.latitude,
+        longitude: WEATHER_CONFIG.longitude,
+        timezone: "auto",
+        daily: "temperature_2m_max",
+        hourly: "rain,precipitation_probability",
+        forecast_days: "1"
+      });
+
+      const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+      if (!response.ok) {
+        throw new Error("天気データを取得できませんでした。");
+      }
+
+      const data = await response.json();
+      if (!data.hourly || !Array.isArray(data.hourly.time)) {
+        throw new Error("天気データの形式が正しくありません。");
+      }
+
+      return data;
     }
 
     function getElement(id) {
@@ -424,14 +583,16 @@
 
     function createElements() {
       return {
-        clock: getElement("clock"),
         todayDate: getElement("todayDate"),
+        weatherLabel: getElement("weatherLabel"),
+        clothingLabel: getElement("clothingLabel"),
         taskIcon: getElement("taskIcon"),
         taskMain: getElement("taskMain"),
         taskNote: getElement("taskNote"),
         progressFill: getElement("progressFill"),
         progressLabel: getElement("progressLabel"),
-        nextTask: getElement("nextTask")
+        nextTask: getElement("nextTask"),
+        taskCard: document.querySelector(".task-card")
       };
     }
 
@@ -444,26 +605,80 @@
       }
     }
 
+    async function updateWeatherLabels(elements) {
+      elements.weatherLabel.classList.remove("is-clear", "is-error");
+
+      try {
+        const data = await fetchWeatherData();
+        const maxTemp = Math.round(data.daily.temperature_2m_max[0]);
+        const umbrellaAdvice = getUmbrellaAdvice(
+          data.hourly.time,
+          data.hourly.rain,
+          data.hourly.precipitation_probability
+        );
+
+        elements.clothingLabel.textContent = getClothingAdvice(maxTemp);
+        elements.weatherLabel.textContent = umbrellaAdvice;
+
+        if (umbrellaAdvice.includes("いらない")) {
+          elements.weatherLabel.classList.add("is-clear");
+        }
+      } catch (error) {
+        elements.clothingLabel.textContent = "ふくそう 未取得";
+        elements.weatherLabel.textContent = "てんき 未取得";
+        elements.weatherLabel.classList.add("is-error");
+      }
+    }
+
+    let lastTaskKey = null;
+    let attentionTimeoutId = null;
+
+    function triggerTaskAttention(elements) {
+      if (!elements.taskCard) return;
+
+      elements.taskCard.classList.remove("attention");
+      void elements.taskCard.offsetWidth;
+      elements.taskCard.classList.add("attention");
+
+      clearTimeout(attentionTimeoutId);
+      attentionTimeoutId = setTimeout(() => {
+        elements.taskCard.classList.remove("attention");
+      }, 30000);
+    }
+
     function render(elements, date = new Date()) {
       const task = getCurrentTask(date);
-      const nextTask = getNextTask(date);
+      const upcomingTasks = getUpcomingTasks(date, 3);
       const progress = getTaskProgress(date, task);
+      const taskKey = `${task.start}-${task.main}`;
       const remainingMinutes = getRemainingMinutes(date, task);
 
-      elements.clock.innerHTML = formatClock(date);
+      if (lastTaskKey !== taskKey) {
+        triggerTaskAttention(elements);
+        lastTaskKey = taskKey;
+      }
+
       elements.todayDate.textContent = formatDate(date);
       elements.taskIcon.textContent = task.icon;
       elements.taskMain.textContent = task.main;
-      fitTextToWidth(elements.taskMain, 82, 30);
+      fitTextToWidth(elements.taskMain, 132, 42);
       elements.taskNote.textContent = task.note;
       elements.progressFill.style.width = `${progress}%`;
-      elements.progressLabel.textContent = `あと ${remainingMinutes} ぷん`;
+      elements.progressLabel.innerHTML = `あと <span class="progress-number">${remainingMinutes}</span> ぷん`;
 
-      if (nextTask) {
-        elements.nextTask.textContent = `つぎは ${nextTask.start} から ${nextTask.main}`;
-        elements.nextTask.style.display = "inline-flex";
+      if (upcomingTasks.length > 0) {
+        elements.nextTask.innerHTML = upcomingTasks
+          .map(task => `
+            <div class="next-task-item">
+              <div>つぎは ${task.start} から</div>
+              <div>${task.main}</div>
+            </div>
+          `)
+          .join("");
+
+        elements.nextTask.style.display = "flex";
       } else {
-        elements.nextTask.textContent = "";
+        elements.nextTask.innerHTML = "";
         elements.nextTask.style.display = "none";
       }
     }
@@ -482,14 +697,25 @@
       console.assert(getCurrentTask(new Date("2026-05-11T21:30:00")).main === "おやすみタイム", "21:30はおやすみタイム");
       console.assert(getRemainingMinutes(new Date("2026-05-11T23:59:30"), getCurrentTask(new Date("2026-05-11T23:59:30"))) === 1, "23:59:30の残り時間は1分");
       console.assert(getTaskProgress(new Date("2026-05-11T23:59:30"), getCurrentTask(new Date("2026-05-11T23:59:30"))) >= 0, "深夜直前でも進捗計算で落ちない");
-      console.assert(getNextTask(new Date("2026-05-11T21:30:00")) === null, "最後の予定中は次の予定なし");
+      console.assert(getUpcomingTasks(new Date("2026-05-11T06:50:00"), 3).length === 3, "3件の次タスクを取得できる");
+      console.assert(getUpcomingTasks(new Date("2026-05-11T21:30:00"), 3).length === 0, "最後の予定中は次の予定なし");
+      console.assert(getUmbrellaAdvice(["2026-05-11T08:00"], [0], [40]).includes("いる"), "8時から16時の降水確率40%以上はかさ いる");
+      console.assert(getUmbrellaAdvice(["2026-05-11T12:00"], [0.1], [0]).includes("いる"), "8時から16時の雨量ありはかさ いる");
+      console.assert(getUmbrellaAdvice(["2026-05-11T17:00"], [5], [100]).includes("いらない"), "対象時間外の雨はかさ いらない");
+      console.assert(getClothingAdvice(23) === "はんそで", "23度ははんそで");
+      console.assert(getClothingAdvice(17) === "ながそで", "17度はながそで");
+      console.assert(getClothingAdvice(10) === "ながそで ＋ うわぎ", "10度はながそで＋うわぎ");
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       runTests();
       const elements = createElements();
+
       render(elements);
+      updateWeatherLabels(elements);
+
       setInterval(() => render(elements), 1000);
+      setInterval(() => updateWeatherLabels(elements), 60 * 60 * 1000);
     });
   </script>
 </body>
