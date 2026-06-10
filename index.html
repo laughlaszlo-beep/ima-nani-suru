@@ -632,9 +632,71 @@
 
     let lastTaskKey = null;
     let attentionTimeoutId = null;
+    let audioContext = null;
+    let chimeReady = false;
 
-    function triggerTaskAttention(elements) {
+    function setupChimeUnlock() {
+      document.addEventListener(
+        "pointerdown",
+        async () => {
+          try {
+            if (!audioContext) {
+              audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioContext.state === "suspended") {
+              await audioContext.resume();
+            }
+
+            chimeReady = true;
+          } catch (error) {
+            console.error("チャイム準備失敗", error);
+          }
+        },
+        { once: true }
+      );
+    }
+
+    function playChime() {
+      if (!chimeReady) return;
+
+      try {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        if (audioContext.state === "suspended") {
+          audioContext.resume();
+        }
+
+        const now = audioContext.currentTime;
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(783.99, now);
+        oscillator.frequency.exponentialRampToValueAtTime(659.25, now + 0.9);
+
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.18, now + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.25);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start(now);
+        oscillator.stop(now + 1.25);
+      } catch (error) {
+        console.error("チャイム再生失敗", error);
+      }
+    }
+
+    function triggerTaskAttention(elements, playSound = true) {
       if (!elements.taskCard) return;
+
+      if (playSound) {
+        playChime();
+      }
 
       elements.taskCard.classList.remove("attention");
       void elements.taskCard.offsetWidth;
@@ -653,8 +715,11 @@
       const taskKey = `${task.start}-${task.main}`;
       const remainingMinutes = getRemainingMinutes(date, task);
 
-      if (lastTaskKey !== taskKey) {
-        triggerTaskAttention(elements);
+      if (lastTaskKey === null) {
+        triggerTaskAttention(elements, false);
+        lastTaskKey = taskKey;
+      } else if (lastTaskKey !== taskKey) {
+        triggerTaskAttention(elements, true);
         lastTaskKey = taskKey;
       }
 
@@ -716,6 +781,8 @@
 
       setInterval(() => render(elements), 1000);
       setInterval(() => updateWeatherLabels(elements), 60 * 60 * 1000);
+
+      setupChimeUnlock();
     });
   </script>
 </body>
